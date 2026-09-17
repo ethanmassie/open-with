@@ -1,4 +1,3 @@
-
 /**
  *
  * @typedef {(value: any) => boolean} Rule
@@ -17,7 +16,7 @@
  *
  * @type {Rule}
  */
-export function isRequired (value) {
+export function isRequired(value) {
   return !!value;
 }
 
@@ -27,7 +26,7 @@ export function isRequired (value) {
  * @returns {Rule}
  */
 export function isEnum(set) {
-  return (value) => set.some(s => s === value);
+  return (value) => set.some((s) => s === value);
 }
 
 /**
@@ -50,7 +49,7 @@ export function isArray(value) {
  * @returns {Rule}
  */
 export function isEvery(...rules) {
-  return (value) => rules.every(rule => rule(value))
+  return (value) => rules.every((rule) => rule(value));
 }
 
 /**
@@ -59,7 +58,7 @@ export function isEvery(...rules) {
  * @returns {Rule}
  */
 export function isSome(...rules) {
-  return (value) => rules.some(rule => rule(value));
+  return (value) => rules.some((rule) => rule(value));
 }
 
 /**
@@ -80,7 +79,7 @@ export function validate(schema) {
     }
 
     return true;
-  }
+  };
 }
 
 /**
@@ -95,5 +94,5 @@ export function validateArray(validator) {
     }
 
     return value.every(validator);
-  }
+  };
 }

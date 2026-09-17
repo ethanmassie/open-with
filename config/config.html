@@ -1,89 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <link
+      href="/shared/theme.css"
+      rel="stylesheet"
+    />
+    <link
+      href="./config.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<head>
-  <link href="/shared/theme.css" rel="stylesheet" />
-  <link href="./config.css" rel="stylesheet" />
-</head>
+  <body>
+    <main>
+      <header>
+        <h1>Configure Menus</h1>
+      </header>
+      <form id="menus-form"></form>
+      <footer class="actions-container">
+        <button
+          id="export-button"
+          type="button"
+        >
+          <span
+            class="icon"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M23,12L19,8V11H10V13H19V16M1,18V6C1,4.89 1.9,4 3,4H15A2,2 0 0,1 17,6V9H15V6H3V18H15V15H17V18A2,2 0 0,1 15,20H3A2,2 0 0,1 1,18Z"
+              />
+            </svg>
+          </span>
+          Export
+        </button>
+        <button
+          id="import-button"
+          type="button"
+        >
+          <span
+            class="icon"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z"
+              />
+            </svg>
+          </span>
+          Import
+        </button>
+        <input
+          id="import-file-picker"
+          type="file"
+          aria-hidden="true"
+          accept=".json,application/json"
+        />
+        <button
+          class="add-button"
+          type="button"
+        >
+          <span
+            class="icon"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
+          </span>
+          New Menu
+        </button>
+        <button
+          id="save-button"
+          class="save-button"
+          form="menus-form"
+          type="submit"
+        >
+          <span
+            class="icon"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z"
+              />
+            </svg>
+          </span>
+          Save
+        </button>
+      </footer>
+    </main>
 
-<body>
-  <main>
-    <header>
-      <h1>Configure Menus</h1>
+    <template id="menu-form-set-template">
+      <fieldset>
+        <legend>Menu Options</legend>
+        <label>
+          Title
+          <input data-field="title" />
+        </label>
 
-    </header>
-    <form id="menus-form">
-    </form>
-    <footer class="actions-container">
-      <button id="export-button" type="button">
-        <span class="icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M23,12L19,8V11H10V13H19V16M1,18V6C1,4.89 1.9,4 3,4H15A2,2 0 0,1 17,6V9H15V6H3V18H15V15H17V18A2,2 0 0,1 15,20H3A2,2 0 0,1 1,18Z" /></svg>
-        </span>
-        Export
-      </button>
-      <button id="import-button" type="button">
-        <span class="icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14,12L10,8V11H2V13H10V16M20,18V6C20,4.89 19.1,4 18,4H6A2,2 0 0,0 4,6V9H6V6H18V18H6V15H4V18A2,2 0 0,0 6,20H18A2,2 0 0,0 20,18Z" /></svg>
-        </span>
-        Import
-      </button>
-      <input id="import-file-picker" type="file" aria-hidden="true" accept=".json,application/json"/>
-      <button class="add-button" type="button">
-        <span class="icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-          </svg>
-        </span>
-        New Menu
-      </button>
-      <button id="save-button" class="save-button" form="menus-form" type="submit">
-        <span class="icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z" />
-          </svg>
-        </span>
-        Save
-      </button>
-    </footer>
-  </main>
+        <label>
+          Context
+          <select data-field="context">
+            <option value="selection">
+              Selection (show when right clicking a selection)
+            </option>
+            <option value="link">Link (show when right clicking a link)</option>
+          </select>
+          <span class="helper-text">Determines when the menu is relevant.</span>
+        </label>
 
-  <template id="menu-form-set-template">
-    <fieldset>
-      <legend>Menu Options</legend>
-      <label>
-        Title
-        <input data-field="title" />
-      </label>
+        <label>
+          URL Template
+          <input data-field="urlTemplate" />
+          <span class="helper-text">
+            The token "{value}" is replaced with the URI encoded link url or
+            selected text (i.e https://jisho.org/search/{value})
+          </span>
+        </label>
+        <button
+          class="remove-field-button danger-button"
+          type="button"
+        >
+          <span
+            class="icon"
+            aria-hidden="true"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+              />
+            </svg>
+          </span>
+          Remove
+        </button>
+      </fieldset>
+    </template>
 
-      <label>
-        Context
-        <select data-field="context">
-          <option value="selection">Selection (show when right clicking a selection)</option>
-          <option value="link">Link (show when right clicking a link)</option>
-        </select>
-        <span class="helper-text">Determines when the menu is relevant.</span>
-      </label>
-
-      <label>
-        URL Template
-        <input data-field="urlTemplate" />
-        <span class="helper-text">The token "{value}" is replaced with the URI encoded link url or selected text (i.e
-          https://jisho.org/search/{value})</span>
-      </label>
-      <button class="remove-field-button danger-button" type="button">
-        <span class="icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path
-              d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-          </svg>
-        </span>
-        Remove
-      </button>
-    </fieldset>
-  </template>
-
-  <script src="./config.js" type="module"></script>
-</body>
-
+    <script
+      src="./config.js"
+      type="module"
+    ></script>
+  </body>
 </html>

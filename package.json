@@ -7,9 +7,10 @@
   "type": "commonjs",
   "main": "open-with.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "prettier . --write"
   },
   "devDependencies": {
-    "@types/firefox-webext-browser": "^143.0.0"
+    "@types/firefox-webext-browser": "^143.0.0",
+    "prettier": "^3.9.8"
   }
 }

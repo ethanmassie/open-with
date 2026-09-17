@@ -1,4 +1,4 @@
-import { getConfig, setConfig, watchConfig } from "../shared/config.js";
+import { getConfig, setConfig, watchConfig } from '../shared/config.js';
 
 function initializeImport() {
   const filePicker = document.getElementById('import-file-picker');
@@ -21,7 +21,7 @@ function initializeImport() {
       return;
     }
     const file = files[0];
-    const text = await file.text()
+    const text = await file.text();
     let config;
     try {
       config = JSON.parse(text);
@@ -34,23 +34,25 @@ function initializeImport() {
     } catch {
       console.error('Invalid Config');
     }
-  })
+  });
 }
 
 function initializeExport() {
-  document.getElementById('export-button')?.addEventListener('click', async () => {
-    const config = await getConfig()
-    const configJson = JSON.stringify(config, undefined, 2);
-    const url = window.URL.createObjectURL(new Blob([configJson]))
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'open-with-config.json';
-    a.click();
+  document
+    .getElementById('export-button')
+    ?.addEventListener('click', async () => {
+      const config = await getConfig();
+      const configJson = JSON.stringify(config, undefined, 2);
+      const url = window.URL.createObjectURL(new Blob([configJson]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'open-with-config.json';
+      a.click();
 
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 5000)
-  });
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 5000);
+    });
 }
 
 function initializeForm() {
@@ -76,7 +78,7 @@ function initializeForm() {
 
       return;
     }
-  })
+  });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -88,13 +90,13 @@ function initializeForm() {
       // TODO: add visual feedback
       console.error(e);
     }
-  })
+  });
 
   watchConfig((config) => {
     const menuFieldsets =
-      config.menus.length === 0 ?
-        [createMenuFieldset()] :
-        config.menus.map((menu) => createMenuFieldset(menu));
+      config.menus.length === 0
+        ? [createMenuFieldset()]
+        : config.menus.map((menu) => createMenuFieldset(menu));
     form.innerHTML = '';
     form.append(...menuFieldsets);
   });
@@ -107,12 +109,15 @@ function initializeForm() {
  */
 function collectFormData(form) {
   /** @type {import("../shared/config.js").MenuConfig[]} */
-  const menus = []
-  form.querySelectorAll('fieldset').forEach(fieldset => {
+  const menus = [];
+  form.querySelectorAll('fieldset').forEach((fieldset) => {
     /** @type {any} */
-    const menu = {}
+    const menu = {};
     fieldset.querySelectorAll('[data-field]').forEach((fieldElement) => {
-      if (!(fieldElement instanceof HTMLInputElement) && !(fieldElement instanceof HTMLSelectElement)) {
+      if (
+        !(fieldElement instanceof HTMLInputElement) &&
+        !(fieldElement instanceof HTMLSelectElement)
+      ) {
         return;
       }
 
@@ -124,7 +129,7 @@ function collectFormData(form) {
     });
 
     menu.id = crypto.randomUUID();
-    menus.push(menu)
+    menus.push(menu);
   });
 
   return { menus };
@@ -145,8 +150,11 @@ function createMenuFieldset(menu = undefined) {
 
   if (menu) {
     Object.entries(menu).forEach(([field, value]) => {
-      const fieldElement = clone.querySelector(`[data-field=${field}]`)
-      if (!(fieldElement instanceof HTMLInputElement) && !(fieldElement instanceof HTMLSelectElement)) {
+      const fieldElement = clone.querySelector(`[data-field=${field}]`);
+      if (
+        !(fieldElement instanceof HTMLInputElement) &&
+        !(fieldElement instanceof HTMLSelectElement)
+      ) {
         return;
       }
 
@@ -156,7 +164,6 @@ function createMenuFieldset(menu = undefined) {
 
   return clone;
 }
-
 
 initializeForm();
 initializeExport();

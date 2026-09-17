@@ -1,4 +1,4 @@
-import { watchConfig } from "../shared/config.js";
+import { watchConfig } from '../shared/config.js';
 
 /**
  *
@@ -11,18 +11,20 @@ async function populateLoadedMenusList(config) {
     li.innerText = menu.title;
 
     return li;
-  })
+  });
 
   const list = document.getElementById('loaded-menus-list');
   if (!list) {
     return;
   }
-  list.innerHTML = ''
+  list.innerHTML = '';
   list.append(...menuItems);
 }
 
 function initializeOpenConfigButton() {
-  document.getElementById('open-config-button')?.addEventListener('click', () => browser.runtime.openOptionsPage());
+  document
+    .getElementById('open-config-button')
+    ?.addEventListener('click', () => browser.runtime.openOptionsPage());
 }
 
 (async () => {
@@ -31,5 +33,4 @@ function initializeOpenConfigButton() {
   watchConfig((config) => {
     populateLoadedMenusList(config);
   });
-})()
-
+})();

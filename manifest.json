@@ -3,10 +3,7 @@
   "name": "Open With",
   "version": "1.0",
   "description": "Allows customizable context menu link shortcuts.",
-  "permissions": [
-    "menus",
-    "storage"
-  ],
+  "permissions": ["menus", "storage"],
   "background": {
     "scripts": ["background/create-menus.js"],
     "type": "module"

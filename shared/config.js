@@ -5,19 +5,19 @@ import {
   isType,
   validate,
   validateArray,
-} from "./validate.js";
+} from './validate.js';
 
-export const CONFIG_KEY = "config";
-export const VALID_CONTEXTS = ["link", "selection"];
+export const CONFIG_KEY = 'config';
+export const VALID_CONTEXTS = ['link', 'selection'];
 
 /**
  * @type {import("./validate").Schema<MenuConfig>}
  */
 const MENU_CONFIG_SCHEMA = {
-  id: isEvery(isRequired, isType("string")),
-  title: isEvery(isRequired, isType("string")),
+  id: isEvery(isRequired, isType('string')),
+  title: isEvery(isRequired, isType('string')),
   context: isEvery(isRequired, isEnum(VALID_CONTEXTS)),
-  urlTemplate: isEvery(isRequired, isType("string")),
+  urlTemplate: isEvery(isRequired, isType('string')),
 };
 
 export const isValidMenu = validate(MENU_CONFIG_SCHEMA);
@@ -95,7 +95,7 @@ export async function watchConfig(fn) {
  */
 export function setConfig(config) {
   if (!isValidConfig(config)) {
-    throw Error("Attempted to store invalid config", { cause: config });
+    throw Error('Attempted to store invalid config', { cause: config });
   }
 
   browser.storage.local.set({ [CONFIG_KEY]: config });

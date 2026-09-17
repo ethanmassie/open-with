@@ -1,4 +1,4 @@
-import { CONFIG_KEY, watchConfig } from "../shared/config.js";
+import { CONFIG_KEY, watchConfig } from '../shared/config.js';
 
 /**
  * @typedef {(info: browser.menus.OnClickData, tab?: browser.tabs.Tab) => void} MenuOnClickListener
@@ -46,9 +46,10 @@ function openTabForTemplate(value, template) {
  * Creates menus and adds an event listener to handle menu clicks
  *
  * @param {import("../shared/config.js").MenuConfig[]} menus
- * @returns {MenuState}
+ * @returns {Promise<MenuState>}
  */
-function initializeMenus(menus) {
+async function initializeMenus(menus) {
+  await browser.menus.removeAll();
   /** @type {(string | number)[]} */
   const menuIds = [];
   menus.forEach((menu) => {
@@ -69,10 +70,10 @@ function initializeMenus(menus) {
 
     let value;
     switch (clickedMenu.context) {
-      case "link":
+      case 'link':
         value = info.linkUrl;
         break;
-      case "selection":
+      case 'selection':
         value = info.selectionText;
         break;
     }
@@ -103,7 +104,6 @@ browser.runtime.onInstalled.addListener(() => {
   watchConfig(async (config) => {
     if (menuState) {
       browser.menus.onClicked.removeListener(menuState.listener);
-      await browser.menus.removeAll();
     }
 
     menuState = await initialize(config);
