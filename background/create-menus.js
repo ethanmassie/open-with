@@ -90,36 +90,22 @@ function initializeMenus(menus) {
 
 /**
  * Creates menus for the currently persisted config
+ * @param {import("../shared/config.js").ConfigData} config
  * @returns
  */
-async function initialize() {
-  const initialConfig = await getConfig();
-  return initializeMenus(initialConfig.menus || []);
-}
-
-/**
- * Removes old menus and the original listener
- *
- * @param {MenuState} state
- * @param {import("../shared/config.js").ConfigData} config
- * @returns {Promise<MenuState>}
- */
-async function reinitialize(state, config) {
-  await browser.menus.removeAll();
-  browser.menus.onClicked.removeListener(state.listener);
-
-  return initializeMenus(config.menus || []);
+async function initialize(config) {
+  return initializeMenus(config.menus);
 }
 
 browser.runtime.onInstalled.addListener(() => {
-  /** @type {MenuState} */
-  let menuState;
+  /** @type {MenuState | null} */
+  let menuState = null;
   watchConfig(async (config) => {
     if (menuState) {
       browser.menus.onClicked.removeListener(menuState.listener);
       await browser.menus.removeAll();
     }
 
-    menuState = await reinitialize(menuState, config);
+    menuState = await initialize(config);
   });
 });
