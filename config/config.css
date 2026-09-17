@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: unset;
+}
+
+main {
+  max-width: 100vw;
+  width: 800px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 1em 0px;
+  box-sizing: border-box;
+  flex: 1 1 0;
+}
+
+.remove-field-button {
+  width: fit-content;
+  align-self: flex-end;
+}
+
+#import-file-picker {
+  display: none;
+}

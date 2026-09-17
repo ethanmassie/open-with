@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "target": "ES2024",
+        "types": ["firefox-webext-browser"],
+        "allowImportingTsExtensions": true,
+        "checkJs": true,
+        "experimentalDecorators": false,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strict": false
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

@@ -1,0 +1,10 @@
+body {
+  padding: 1em 1em;
+  box-sizing: border-box;
+}
+
+.actions-container {
+  align-items: center;
+  justify-content: center;
+  padding-bottom: unset;
+}
