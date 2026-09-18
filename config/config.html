@@ -1,6 +1,12 @@
 <!doctype html>
 <html>
   <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <link
       href="/shared/theme.css"
       rel="stylesheet"
@@ -15,6 +21,19 @@
     <main>
       <header>
         <h1>Configure Menus</h1>
+        <p>
+          URL templates replace special tokens with the context value (either
+          the link or selected text). A template should look something like
+          "https://jisho.org/search/{value}". If you highlighted "家" and
+          applied this template you would open the URL
+          "https://jisho.org/search/家".
+        </p>
+        <ul>
+          <li>
+            "{value}": becomes the URI encoded value (when in doubt use this)
+          </li>
+          <li>"{raw_value}": becomes the value without any encoding applied</li>
+        </ul>
       </header>
       <form id="menus-form"></form>
       <footer class="actions-container">
@@ -130,10 +149,6 @@
         <label>
           URL Template
           <input data-field="urlTemplate" />
-          <span class="helper-text">
-            The token "{value}" is replaced with the URI encoded link url or
-            selected text (i.e https://jisho.org/search/{value})
-          </span>
         </label>
         <button
           class="remove-field-button danger-button"
