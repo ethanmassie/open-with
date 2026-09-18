@@ -128,7 +128,6 @@ function collectFormData(form) {
       menu[field] = fieldElement.value;
     });
 
-    menu.id = crypto.randomUUID();
     menus.push(menu);
   });
 
@@ -160,6 +159,13 @@ function createMenuFieldset(menu = undefined) {
 
       fieldElement.value = value;
     });
+  } else {
+    const idField = clone.querySelector('input[data-field="id"]');
+    if (!idField || !(idField instanceof HTMLInputElement)) {
+      throw new Error('Missing essential field');
+    }
+
+    idField.value = crypto.randomUUID();
   }
 
   return clone;
