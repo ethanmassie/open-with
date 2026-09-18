@@ -5,7 +5,7 @@ Define custom context menus that use simple template strings to generate URLs an
 For example:
 
 - A selection menu with template `https://jisho.org/search/{value}` would search any highlighted text on jisho.
-- Populate a tracking number in the URL for you package tracking app of choice
+- Populate a tracking number in the URL for your package tracking app of choice
 - Open a site in your private ladder instance
 
 Features:
