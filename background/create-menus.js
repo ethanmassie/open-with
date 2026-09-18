@@ -84,7 +84,6 @@ async function initializeMenus(menus) {
 
     openTabForTemplate(value, clickedMenu.urlTemplate);
   };
-  browser.menus.onClicked.addListener(listener);
 
   return { menuIds, listener };
 }
@@ -98,14 +97,37 @@ async function initialize(config) {
   return initializeMenus(config.menus);
 }
 
-browser.runtime.onInstalled.addListener(() => {
-  /** @type {MenuState | null} */
-  let menuState = null;
-  watchConfig(async (config) => {
-    if (menuState) {
-      browser.menus.onClicked.removeListener(menuState.listener);
-    }
+browser.runtime.onInstalled.addListener(async () => {
+  const config = await getConfig();
+  initialize(config);
+});
 
-    menuState = await initialize(config);
-  });
+browser.storage.local.onChanged.addListener(async (changes) => {
+  if (changes[CONFIG_KEY]) {
+    initialize(await getConfig());
+  }
+});
+
+browser.menus.onClicked.addListener(async (info) => {
+  const config = await getConfig();
+  const clickedMenu = config.menus.find((m) => m.id === info.menuItemId);
+  if (!clickedMenu) {
+    return;
+  }
+
+  let value;
+  switch (clickedMenu.context) {
+    case 'link':
+      value = info.linkUrl;
+      break;
+    case 'selection':
+      value = info.selectionText;
+      break;
+  }
+
+  if (!value) {
+    return;
+  }
+
+  openTabForTemplate(value, clickedMenu.urlTemplate);
 });
