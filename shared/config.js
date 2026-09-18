@@ -64,6 +64,17 @@ export async function getConfig() {
 }
 
 /**
+ *
+ * @param {string} id
+ * @returns {Promise<MenuConfig | undefined>}
+ */
+export async function getConfiguredMenu(id) {
+  const config = await getConfig();
+
+  return config.menus.find((m) => m.id === id);
+}
+
+/**
  * Initially calls fn with the current value of config then calls again whenever config changes.
  *
  * @param {(config: ConfigData) => void} fn

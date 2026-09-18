@@ -1,14 +1,4 @@
-import { CONFIG_KEY, watchConfig } from '../shared/config.js';
-
-/**
- * @typedef {(info: browser.menus.OnClickData, tab?: browser.tabs.Tab) => void} MenuOnClickListener
- */
-
-/**
- * @typedef {Object} MenuState
- * @property {(string | number)[]} menuIds
- * @property {MenuOnClickListener} listener
- */
+import { CONFIG_KEY, getConfiguredMenu } from '../shared/config.js';
 
 /**
  * @type {import("../shared/config.js").ConfigData}
@@ -32,11 +22,17 @@ async function getConfig() {
  *
  * Replace placeholders in the template with either the value or URI encoded value then create a new tab
  *
+ * Template supports
+ * - {value}: the encoded URI value
+ * - {raw_value}: the value exactly as is
+ *
  * @param {string} value
  * @param {string} template
  */
 function openTabForTemplate(value, template) {
-  const url = template.replaceAll(/\{value\}/g, encodeURIComponent(value));
+  const url = template
+    .replaceAll(/\{value\}/g, encodeURIComponent(value))
+    .replaceAll(/\{raw_value\}/g, value);
 
   browser.tabs.create({ url });
 }
@@ -46,46 +42,17 @@ function openTabForTemplate(value, template) {
  * Creates menus and adds an event listener to handle menu clicks
  *
  * @param {import("../shared/config.js").MenuConfig[]} menus
- * @returns {Promise<MenuState>}
+ * @returns {Promise<(string | number)[]>}
  */
 async function initializeMenus(menus) {
   await browser.menus.removeAll();
-  /** @type {(string | number)[]} */
-  const menuIds = [];
-  menus.forEach((menu) => {
+  return menus.map((menu) => {
     return browser.menus.create({
       id: menu.id,
       title: menu.title,
       contexts: [menu.context],
     });
   });
-  /**
-   * @type {MenuOnClickListener}
-   */
-  const listener = (info) => {
-    const clickedMenu = menus.find((m) => m.id === info.menuItemId);
-    if (!clickedMenu) {
-      return;
-    }
-
-    let value;
-    switch (clickedMenu.context) {
-      case 'link':
-        value = info.linkUrl;
-        break;
-      case 'selection':
-        value = info.selectionText;
-        break;
-    }
-
-    if (!value) {
-      return;
-    }
-
-    openTabForTemplate(value, clickedMenu.urlTemplate);
-  };
-
-  return { menuIds, listener };
 }
 
 /**
@@ -98,8 +65,7 @@ async function initialize(config) {
 }
 
 browser.runtime.onInstalled.addListener(async () => {
-  const config = await getConfig();
-  initialize(config);
+  initialize(await getConfig());
 });
 
 browser.storage.local.onChanged.addListener(async (changes) => {
@@ -109,21 +75,22 @@ browser.storage.local.onChanged.addListener(async (changes) => {
 });
 
 browser.menus.onClicked.addListener(async (info) => {
-  const config = await getConfig();
-  const clickedMenu = config.menus.find((m) => m.id === info.menuItemId);
+  const clickedMenu = await getConfiguredMenu(info.menuItemId.toString());
   if (!clickedMenu) {
+    console.warn(`Potential stray menu ${info.menuItemId}`);
     return;
   }
 
-  let value;
-  switch (clickedMenu.context) {
-    case 'link':
-      value = info.linkUrl;
-      break;
-    case 'selection':
-      value = info.selectionText;
-      break;
-  }
+  const value = (() => {
+    switch (clickedMenu.context) {
+      case 'link':
+        return info.linkUrl;
+      case 'selection':
+        return info.selectionText;
+      default:
+        return undefined;
+    }
+  })();
 
   if (!value) {
     return;
